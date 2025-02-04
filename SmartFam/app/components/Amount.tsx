@@ -20,7 +20,7 @@ const Amount = () => {
     }}>
       <View
         style={{
-          height: 100,
+          height: 140,
           width: 140,
           backgroundColor: "#47c06e",
           borderRadius: 20,
@@ -47,7 +47,7 @@ const Amount = () => {
       </View>
       <View
         style={{
-          height: 100,
+          height: 140,
           width: 140,
           backgroundColor: "#e15454",
           borderRadius: 20,

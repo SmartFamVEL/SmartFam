@@ -4,9 +4,11 @@ import BotLayout from "./components/BotLayout.tsx";
 import Main from "./components/Main.tsx";
 import ExpAdd from "./components/ExpAdd.tsx";
 import TypeWriter from 'react-native-typewriter';
-//image
+// image
 
 import Mon from "../assets/images/mon.png";
+// import Login from "./components/Login/Login.tsx";
+// import GetStarted from "./components/Login/GetStarted.tsx";
 export default function Index() {
   const User="Mugeish Kumar"
   return (
@@ -19,7 +21,7 @@ export default function Index() {
       style={{
         paddingTop: 40,
         paddingLeft: 30,
-        backgroundColor: "#097ae6",
+        backgroundColor: "#047628",
         borderBottomLeftRadius: 20,
         borderBottomRightRadius: 20,
         height: 240,
@@ -68,6 +70,8 @@ export default function Index() {
       >
         <Main/>
       </ScrollView>
+      {/* <Login/> */}
+      {/* <GetStarted/> */}
     </ScrollView>
   );
 }

@@ -15,7 +15,7 @@ const ExpAdd = () => {
     >
       <TouchableOpacity
         style={{
-          backgroundColor: "#0082ff",
+          backgroundColor: "#b3dd04",
           borderRadius: 25,
           width: 180,
           height: 60,
