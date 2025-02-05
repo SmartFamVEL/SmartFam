@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar, Image } from "react-native";
-
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../Index";
 // Image import for Google button
 import gog from '../../../assets/images/gog.png';
 
-const Login = () => {
+type Loginprops={
+    navigation:StackNavigationProp<RootStackParamList,"Login">
+}
+const Login:React.FC<Loginprops>= ({navigation}) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -39,7 +43,7 @@ const Login = () => {
                     <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.loginButton}>
+                <TouchableOpacity style={styles.loginButton} onPress={()=>navigation.navigate("Land")}>
                     <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
 
