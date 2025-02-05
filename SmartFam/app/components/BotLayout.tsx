@@ -25,7 +25,7 @@ const BotLayout = () => {
 const styles = StyleSheet.create({
   container: {
     position: "relative",
-    bottom:40,
+    bottom:0,
     flexDirection: "row",
     justifyContent: "space-around",
     marginLeft:-20,

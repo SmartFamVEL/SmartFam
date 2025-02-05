@@ -29,30 +29,30 @@ const Profile = () => {
         <View style={styles.userInnerContainer}>
           <View style={styles.userDetailsGroup}>
             <Image source={smartphone} style={{ width: 25, height: 25 }} />
-            <Text style={{fontSize:20}}>Mobile No.</Text>
+            <Text style={{ fontSize: 20 }}>Mobile No.</Text>
           </View>
-          <Text style={{fontSize:20}}>9360477284</Text>
+          <Text style={{ fontSize: 20 }}>9360477284</Text>
         </View>
         <View style={styles.userInnerContainer}>
           <View style={styles.userDetailsGroup}>
             <Image source={mSalary} style={{ width: 25, height: 25 }} />
-            <Text style={{fontSize:20}}>Monthly Salary</Text>
+            <Text style={{ fontSize: 20 }}>Monthly Salary</Text>
           </View>
-          <Text style={{fontSize:20}}>$ 5000</Text>
+          <Text style={{ fontSize: 20 }}>$ 5000</Text>
         </View>
         <View style={styles.userInnerContainer}>
           <View style={styles.userDetailsGroup}>
             <Image source={gender} style={{ width: 25, height: 25 }} />
-            <Text style={{fontSize:20}}>Gender</Text>
+            <Text style={{ fontSize: 20 }}>Gender</Text>
           </View>
-          <Text style={{fontSize:20}}>Male</Text>
+          <Text style={{ fontSize: 20 }}>Male</Text>
         </View>
         <View style={styles.userInnerContainer}>
           <View style={styles.userDetailsGroup}>
             <Image source={age} style={{ width: 25, height: 25 }} />
-            <Text style={{fontSize:20}}>Age</Text>
+            <Text style={{ fontSize: 20 }}>Age</Text>
           </View>
-          <Text style={{fontSize:20}}>21</Text>
+          <Text style={{ fontSize: 20 }}>21</Text>
         </View>
       </View>
     </View>
@@ -94,36 +94,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  userDetailsContainer:{
-    height:"40%",
-    width: "90%",
-    marginLeft:"5%",
+  userDetailsContainer: {
+    height: "40%",
+    width: "96%",
+    marginLeft: "2%",
     display: "flex",
-    alignItems:"center",
-    justifyContent:"center",
-    borderWidth:2,
-    borderColor: "lightGrey",
-    borderRadius: 20,
-    backgroundColor:"#F8FAFC"
+    gap: 10,
+    alignItems: "center",
+    justifyContent: "space-around",
+    padding: 10
   },
-  userInnerContainer:{
-    height:"23%",
-    width:"90%",
-    display:"flex",
-    alignItems:"center",
-    justifyContent:"space-between",
-    flexDirection:"row",
-    borderRadius: 20,
-
+  userInnerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: 380,
+    height: 80,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    elevation: 5,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 15,
   },
-  userDetailsGroup:{
+  userDetailsGroup: {
     width: "50%",
-    height:"100%",
-    display:"flex",
-    alignItems:"center",
-    justifyContent:"flex-start",
-    gap:10,
-    flexDirection:"row",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    gap: 10,
+    flexDirection: "row",
   }
 
 })

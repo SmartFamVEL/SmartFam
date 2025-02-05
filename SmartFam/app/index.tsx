@@ -77,8 +77,8 @@
 // }
 
 import { Text, View,ScrollView,Image} from "react-native";
-import Analysis from "./components/Analysis";
-  import Profile from "../../SmartFam/app/components/Profile";
+// import Analysis from "./components/Analysis";
+import Profile from "../../SmartFam/app/components/Profile";
 
   export default function Index() {
     return (
