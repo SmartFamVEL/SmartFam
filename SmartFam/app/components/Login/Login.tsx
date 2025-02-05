@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar, Image } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../Index";
+import { RootStackParamList } from "../../index";
 // Image import for Google button
 import gog from '../../../assets/images/gog.png';
 

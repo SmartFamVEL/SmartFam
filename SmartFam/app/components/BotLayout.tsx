@@ -1,21 +1,23 @@
 import React from "react";
 import { View, TouchableOpacity, Image, StyleSheet, Platform } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../index";
 // Import images
 import home from "../../assets/images/home.png";
 import Mic from "../../assets/images/Mic.png";
 import set from "../../assets/images/set.png";
-
-const BotLayout = () => {
+const BotLayout:React.FC= () => {
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList,'Profile'>>();
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>navigation.navigate('Land')}>
         <Image source={home} style={styles.icon} />
       </TouchableOpacity>
       <TouchableOpacity>
         <Image source={Mic} style={styles.micIcon} />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={()=>navigation.navigate('Profile')}>
         <Image source={set} style={styles.icon} />
       </TouchableOpacity>
     </View>
