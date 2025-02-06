@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import boyAvatar from "../../../SmartFam/assets/images/boyAvatar.png";
+import girlAvatar from "../../../SmartFam/assets/images/girlAvatar.png";
 import edit from "../../assets/images/edit.png";
 import smartphone from "../../assets/images/smartphone.png";
 import mSalary from "../../assets/images/mSalary.png";

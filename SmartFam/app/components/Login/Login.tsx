@@ -9,7 +9,7 @@ type Loginprops={
     navigation:StackNavigationProp<RootStackParamList,"Login">
 }
 const Login:React.FC<Loginprops>= ({navigation}) => {
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     return (
@@ -20,12 +20,12 @@ const Login:React.FC<Loginprops>= ({navigation}) => {
                 <Text style={styles.headerTextBold}>SmartFam</Text>
             </View>
             <View style={styles.formContainer}>
-                <Text style={styles.label}>Username:</Text>
+                <Text style={styles.label}>Email:</Text>
                 <TextInput
                     style={styles.input}
-                    placeholder="Enter your username"
-                    value={username}
-                    onChangeText={setUsername}
+                    placeholder="Enter your Email"
+                    value={email}
+                    onChangeText={setEmail}
                     placeholderTextColor="#888"
                 />
                 
@@ -56,7 +56,7 @@ const Login:React.FC<Loginprops>= ({navigation}) => {
 
                 <View style={styles.signupContainer}>
                     <Text style={styles.signupText}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>navigation.navigate("Signup")}>
                             <Text style={styles.signupLink}>Don't have an account? Sign up</Text>
                         </TouchableOpacity>
                     </Text>
