@@ -5,6 +5,6 @@ const userController=require('../Controller/user');
 
 router.post('/Adduser',userController.AddNewUser);
 
-router.get('/getUser',userController.LoginUser);
+router.post('/getUser',userController.LoginUser);
 
 module.exports=router;

@@ -1,25 +1,38 @@
 const admin = require("firebase-admin");
 const { db, User } = require("../config/Dbconfig");
-const { addDoc } = require("firebase/firestore");
+const { addDoc, query, getDocs, where } = require("firebase/firestore");
+
+const bcrypt = require('bcrypt');
+const Token = require('../middlewares/jwtconfig');
+
 const AddNewUser = async (req, res) => {
     try {
-        const Data = req.body;
+        const { username, email, password, monthlysalary, ph, gender } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Add user data to Firestore collection
-        const NUser = await addDoc(User,Data);
+        const data = {
+            username: username,
+            email: email,
+            password: hashedPassword,
+            monthlysalary: monthlysalary,
+            ph: ph,
+            gender: gender,
+        };
 
-        if (!NUser) {
+        const newUser = await addDoc(User, data);
+
+        if (!newUser) {
             return res.status(400).json({
                 Msg: "User cannot be added",
             });
         }
 
-        res.status(200).json({
+        return res.status(200).json({
             Msg: "User added successfully",
-            userId: NUser.id, // Return Firestore-generated document ID
+            userId: newUser.id,
         });
     } catch (err) {
-        res.status(500).json({
+        return res.status(500).json({
             Msg: "Server Error",
             error: err.message,
         });
@@ -28,36 +41,37 @@ const AddNewUser = async (req, res) => {
 
 const LoginUser = async (req, res) => {
     try {
-        const { token } = req.body;
+        const { email, password } = req.body;
+        const userQuery = query(User, where("email", "==", email));
+        const userSnapshot = await getDocs(userQuery);
 
-        if (!token) {
+        if (userSnapshot.empty) {
             return res.status(400).json({
-                Msg: "No token provided.",
+                Msg: `User not found with this email: ${email}`,
             });
         }
 
-        // Verify Firebase authentication token
-        const decodedToken = await admin.auth().verifyIdToken(token);
-        const uid = decodedToken.uid;
-
-        // Fetch user from Firestore
-        const userDoc = await User.doc(uid).get();
-
-        if (!userDoc.exists) {
-            return res.status(404).json({
-                Msg: `User not found with UID ${uid}`,
-            });
-        }
-
+        const userDoc = userSnapshot.docs[0];
         const userData = userDoc.data();
 
-        res.status(200).json({
-            Msg: "User authenticated successfully.",
-            userData: userData,
+        const isPasswordValid = await bcrypt.compare(password, userData.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({
+                Msg: "Password does not match",
+            });
+        }
+
+        const token = Token.tokenGen(userData.email);
+
+        return res.status(200).json({
+            Msg: "Login successful",
+            userId: userDoc.id,
+            token: token,
         });
+
     } catch (err) {
-        res.status(500).json({
-            Msg: "Error during login",
+        return res.status(500).json({
+            Msg: "Server error",
             error: err.message,
         });
     }
