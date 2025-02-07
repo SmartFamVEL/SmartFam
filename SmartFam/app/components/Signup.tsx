@@ -1,13 +1,56 @@
 import React, { useState } from "react";
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
+import axios from "axios";
+import { useNavigation } from "expo-router";
 
 const Signup = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [monthlySalary, setMonthlySalary] = useState(null);
-    const [mobileNo, SetMobileNo] = useState(null);
+    const [monthlySalary, setMonthlySalary] = useState("");
+    const [mobileNo, SetMobileNo] = useState("");
     const [gender, setGender] = useState("");
+    const [error, setError] = useState("");
+
+    const navigation = useNavigation();
+
+    const handleSignup = async() =>{
+
+        if(!username || !email || !password || !monthlySalary || !mobileNo || !gender){
+            setError("All fields are required");
+            return;
+        }
+
+        try{
+            setError("");
+            
+            const Data = {
+                username,
+                email,
+                password,
+                monthlysalary: Number(monthlySalary),
+                ph: mobileNo,
+                gender,
+            }
+            const res = await axios.post('http://172.17.26.47:6700/Adduser',Data);
+
+            if(res.status === 200 )
+            {
+            console.log("New User Registered Successfully",res.data);
+            setUsername("");
+            setEmail("");
+            setPassword("");
+            setMonthlySalary("");
+            SetMobileNo("");
+            setGender("");
+            }
+            navigation.navigate("Land");
+
+        }
+        catch(err){
+            console.error(err.response?.data?.message || "Error adding user");
+        }
+    }
 
     return (
         <View style={styles.signupContainer}>
@@ -17,6 +60,9 @@ const Signup = () => {
             </View>
             <View style={{ flex: 1 }}>
                 <ScrollView style={styles.formContainer} contentContainerStyle={{ flexGrow: 1 }}>
+                    { error && (<View style={styles.error}>
+                        <Text style={{color:"red", fontSize:20}}>{error}</Text>
+                    </View>)}
                     <Text style={styles.label}>Username:</Text>
                     <TextInput
                         style={styles.input}
@@ -75,7 +121,7 @@ const Signup = () => {
                         placeholderTextColor="#888"
                     />
 
-                    <TouchableOpacity style={styles.signupBtn}>
+                    <TouchableOpacity style={styles.signupBtn} onPress={handleSignup}>
                         <Text style={styles.signupBtnText}>Signup</Text>
                     </TouchableOpacity>
                 </ScrollView>
@@ -138,6 +184,13 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "600",
     },
+    error:{
+        width:"100%",
+        height:"5%",
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center"
+    }
 })
 
 export default Signup;
