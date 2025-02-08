@@ -32,11 +32,11 @@ const Signup = () => {
                 ph: mobileNo,
                 gender,
             }
-            const res = await axios.post('http://172.17.26.47:6700/Adduser',Data);
+            const response = await axios.post('http://192.168.133.250:6700/Adduser',Data);
 
-            if(res.status === 200 )
+            if(response.status === 200)
             {
-            console.log("New User Registered Successfully",res.data);
+            console.log("New User Registered Successfully",response.data);
             setUsername("");
             setEmail("");
             setPassword("");

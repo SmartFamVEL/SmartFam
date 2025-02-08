@@ -1,16 +1,49 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar, Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar, Image, Alert } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../index";
-// Image import for Google button
-import gog from '../../../assets/images/gog.png';
+import { useNavigation } from "expo-router";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
+import gog from "../../../assets/images/gog.png";
 
-type Loginprops={
-    navigation:StackNavigationProp<RootStackParamList,"Login">
-}
-const Login:React.FC<Loginprops>= ({navigation}) => {
+type Loginprops = {
+    navigation: StackNavigationProp<RootStackParamList, "Login">;
+    setProptoken: (token: string) => void; 
+};
+
+const Login: React.FC<Loginprops> = ({setProptoken}) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigation = useNavigation();
+
+    const handleLogin = async () => {
+        try {
+            const Data = { email, password };
+            const response = await axios.post("http://192.168.133.250:6700/getUser", Data);
+
+            if (response.status === 200) {
+                console.log("Logged in Successfully", response.data);
+
+                const token = response.data.token?.Token;
+                const userId = response.data.userId;
+
+                if (token) {
+                    await SecureStore.setItemAsync("user_token", token);
+                    await SecureStore.setItemAsync("user_id", userId);
+                    console.log("Token stored successfully!");
+                    setProptoken(token);
+                }
+
+                setEmail("");
+                setPassword("");
+                navigation.navigate("Land");
+            }
+        } catch (err) {
+            Alert.alert("Login Failed", err.response?.data?.message || "Error logging user");
+            console.error(err.response?.data?.message || "Error logging user");
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -27,8 +60,10 @@ const Login:React.FC<Loginprops>= ({navigation}) => {
                     value={email}
                     onChangeText={setEmail}
                     placeholderTextColor="#888"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
                 />
-                
+
                 <Text style={styles.label}>Password:</Text>
                 <TextInput
                     style={styles.input}
@@ -38,12 +73,12 @@ const Login:React.FC<Loginprops>= ({navigation}) => {
                     onChangeText={setPassword}
                     placeholderTextColor="#888"
                 />
-                
+
                 <TouchableOpacity>
                     <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.loginButton} onPress={()=>navigation.navigate("Land")}>
+                <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
                     <Text style={styles.loginButtonText}>Login</Text>
                 </TouchableOpacity>
 
@@ -55,11 +90,9 @@ const Login:React.FC<Loginprops>= ({navigation}) => {
                 </View>
 
                 <View style={styles.signupContainer}>
-                    <Text style={styles.signupText}>
-                        <TouchableOpacity onPress={()=>navigation.navigate("Signup")}>
-                            <Text style={styles.signupLink}>Don't have an account? Sign up</Text>
-                        </TouchableOpacity>
-                    </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+                        <Text style={styles.signupLink}>Don't have an account? Sign up</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>
@@ -69,7 +102,7 @@ const Login:React.FC<Loginprops>= ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        },
+    },
     header: {
         backgroundColor: "#047628",
         paddingVertical: 50,
@@ -88,11 +121,11 @@ const styles = StyleSheet.create({
         fontWeight: "700",
     },
     formContainer: {
-        height:"90%",
+        height: "90%",
         backgroundColor: "#fff",
         padding: 30,
-        position:'relative',
-        top:-50,
+        position: "relative",
+        top: -50,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         shadowColor: "#FFF",
@@ -164,10 +197,6 @@ const styles = StyleSheet.create({
     signupContainer: {
         marginTop: 30,
         alignItems: "center",
-    },
-    signupText: {
-        fontSize: 16,
-        color: "#333",
     },
     signupLink: {
         color: "#047628",
