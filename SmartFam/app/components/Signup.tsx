@@ -32,7 +32,7 @@ const Signup = () => {
                 ph: mobileNo,
                 gender,
             }
-            const response = await axios.post('http://192.168.133.250:6700/Adduser',Data);
+            const res = await axios.post('http://172.17.26.47:6700/Adduser',Data);
 
             if(response.status === 200)
             {
