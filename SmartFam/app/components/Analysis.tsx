@@ -35,7 +35,9 @@ const styles = StyleSheet.create({
         alignItems:"center",
         justifyContent:"center",
         flexDirection:"row",
-        gap:15
+        gap:15,
+        borderBottomRightRadius:20,
+        borderBottomLeftRadius:20
     },
     calendarContainer: {
         margin: 20,

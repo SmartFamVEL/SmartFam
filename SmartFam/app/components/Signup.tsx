@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Text, TextInput, View, StyleSheet, Image, TouchableOpacity, ScrollView } from "react-native";
 import axios from "axios";
 import { useNavigation } from "expo-router";
+import { Picker } from "@react-native-picker/picker";
 
 const Signup = () => {
     const [username, setUsername] = useState("");
@@ -14,16 +15,16 @@ const Signup = () => {
 
     const navigation = useNavigation();
 
-    const handleSignup = async() =>{
+    const handleSignup = async () => {
 
-        if(!username || !email || !password || !monthlySalary || !mobileNo || !gender){
+        if (!username || !email || !password || !monthlySalary || !mobileNo || !gender) {
             setError("All fields are required");
             return;
         }
 
-        try{
+        try {
             setError("");
-            
+
             const Data = {
                 username,
                 email,
@@ -32,22 +33,21 @@ const Signup = () => {
                 ph: mobileNo,
                 gender,
             }
-            const res = await axios.post('http://172.17.26.47:6700/Adduser',Data);
+            const response = await axios.post('http://172.16.146.231:6700/Adduser', Data);
 
-            if(response.status === 200)
-            {
-            console.log("New User Registered Successfully",response.data);
-            setUsername("");
-            setEmail("");
-            setPassword("");
-            setMonthlySalary("");
-            SetMobileNo("");
-            setGender("");
+            if (response.status === 200) {
+                console.log("New User Registered Successfully", response.data);
+                setUsername("");
+                setEmail("");
+                setPassword("");
+                setMonthlySalary("");
+                SetMobileNo("");
+                setGender("");
+                navigation.navigate("Login");
             }
-            navigation.navigate("Land");
 
         }
-        catch(err){
+        catch (err) {
             console.error(err.response?.data?.message || "Error adding user");
         }
     }
@@ -60,8 +60,8 @@ const Signup = () => {
             </View>
             <View style={{ flex: 1 }}>
                 <ScrollView style={styles.formContainer} contentContainerStyle={{ flexGrow: 1 }}>
-                    { error && (<View style={styles.error}>
-                        <Text style={{color:"red", fontSize:20}}>{error}</Text>
+                    {error && (<View style={styles.error}>
+                        <Text style={{ color: "red", fontSize: 20 }}>{error}</Text>
                     </View>)}
                     <Text style={styles.label}>Username:</Text>
                     <TextInput
@@ -113,13 +113,17 @@ const Signup = () => {
                     />
 
                     <Text style={styles.label}>Gender:</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Enter your Gender"
-                        value={gender}
-                        onChangeText={setGender}
-                        placeholderTextColor="#888"
-                    />
+                    <View style={styles.pickerContainer}>
+                        <Picker
+                            selectedValue={gender}
+                            onValueChange={(itemValue) => setGender(itemValue)}
+                            style={styles.picker}
+                        >
+                            <Picker.Item label="Select Gender" value="" enabled={false} />
+                            <Picker.Item label="Male" value="Male" />
+                            <Picker.Item label="Female" value="Female" />
+                        </Picker>
+                    </View>
 
                     <TouchableOpacity style={styles.signupBtn} onPress={handleSignup}>
                         <Text style={styles.signupBtnText}>Signup</Text>
@@ -140,8 +144,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#047628",
         display: "flex",
         alignItems: "center",
-        borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20
+        borderBottomLeftRadius: 35,
+        borderBottomRightRadius: 35
     },
     accountText1: {
         color: "white",
@@ -172,6 +176,19 @@ const styles = StyleSheet.create({
         fontSize: 16,
         backgroundColor: "#f8f8f8",
     },
+    pickerContainer: {
+        borderWidth: 1,
+        borderColor: "#ddd",
+        borderRadius: 10,
+        marginBottom: 20,
+        backgroundColor: "#f8f8f8",
+        overflow: "hidden",
+    },
+    picker: {
+        height: 50,
+        width: "100%",
+        color: "#333",
+    },
     signupBtn: {
         backgroundColor: "#047628",
         paddingVertical: 15,
@@ -184,12 +201,12 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "600",
     },
-    error:{
-        width:"100%",
-        height:"5%",
-        display:"flex",
-        alignItems:"center",
-        justifyContent:"center"
+    error: {
+        width: "100%",
+        height: "5%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
     }
 })
 

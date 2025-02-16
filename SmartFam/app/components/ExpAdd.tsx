@@ -1,6 +1,10 @@
 import { TouchableOpacity, Text, View } from "react-native";
+import { useNavigation } from "expo-router";
 
 const ExpAdd = () => {
+
+  const navigation = useNavigation();
+
   return (
     <View
       style={{
@@ -16,21 +20,22 @@ const ExpAdd = () => {
       <TouchableOpacity
         style={{
           backgroundColor: "#b3dd04",
-          borderRadius: 25,
-          width: 180,
+          borderRadius: 20,
+          width: 175,
           height: 60,
           flexDirection: "row", 
           alignItems: "center", 
           justifyContent: "center", 
           elevation: 5,
         }}
+        onPress={()=>navigation.navigate("ExpAddForm")}
       >
-        <Text style={{ fontSize: 28, color: "#FFF", marginRight: 10 }}>+</Text>
+        <Text style={{ fontSize: 38, color: "#FFF", marginRight: 8 }}>+</Text>
         <Text
           style={{
             color: "#FFF",
             fontWeight: "bold",
-            fontSize: 18,
+            fontSize: 20,
           }}
         >
           Add Expenses

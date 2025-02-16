@@ -20,7 +20,7 @@ const Login: React.FC<Loginprops> = ({setProptoken}) => {
     const handleLogin = async () => {
         try {
             const Data = { email, password };
-            const response = await axios.post("http://192.168.133.250:6700/getUser", Data);
+            const response = await axios.post("http://172.16.146.231:6700/getUser", Data);
 
             if (response.status === 200) {
                 console.log("Logged in Successfully", response.data);

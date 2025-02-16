@@ -5,18 +5,32 @@ import Main from "../components/Main";
 import ExpAdd from "../components/ExpAdd";
 import TypeWriter from 'react-native-typewriter';
 import Mon from "../../assets/images/mon.png";
-import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Land = ({proptoken}) => {
   const [email,setEmail] = useState("");
-  const User = "Mugeish Kumar";
+  const [userdata,setUserdata] = useState([]);
 
   useEffect(() => {
     const decodeToken = JSON.parse(atob(proptoken.split('.')[1]));
-    console.log("D:",decodeToken);
     setEmail(decodeToken.email);
 }, [proptoken])
+
+useEffect(() => {
+  const fetchData = async() =>{
+    if (!email) return;
+
+    try{
+      const response = await axios.get(`http://172.16.146.231:6700/getdata/${email}`);
+      setUserdata(response.data[0]);
+    }
+    catch(err){
+      console.error(err.response?.data?.message || "Error fetching user");
+  }
+  }
+  fetchData();
+},[email]);
   
   return (
     <View style={{ backgroundColor: '#FFF' }}>
@@ -43,13 +57,13 @@ const Land = ({proptoken}) => {
             transform: [{ rotate: "15deg" }],
           }}
         />
-        <Text style={{ fontSize: 25, fontWeight: "bold", color: "#FFF" }}>
+        <Text style={{ fontSize: 30, fontWeight: "bold", color: "#FFF" }}>
           Welcome,
         </Text>
-        <Text style={{ fontSize: 22, color: "#FFF" }}>
-          <TypeWriter typing={1}>{email}</TypeWriter>
+        <Text style={{ fontSize: 35, color: "#FFF" }}>
+          <TypeWriter typing={1}>{userdata.username}</TypeWriter>
         </Text>
-        <View style={{ marginLeft: -20 }}>
+        <View style={{ marginLeft: -10, marginTop: 10 }}>
           <ExpAdd />
         </View>
       </View>

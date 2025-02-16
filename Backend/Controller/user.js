@@ -42,6 +42,8 @@ const AddNewUser = async (req, res) => {
 const LoginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        console.log(req.body);
         const userQuery = query(User,where("email", "==", email));
         const userSnapshot = await getDocs(userQuery);
 
@@ -76,6 +78,7 @@ const LoginUser = async (req, res) => {
         });
     }
 };
+
 const GetUser = async (req, res) => {
     try {
         const email = req.params.email;
@@ -86,7 +89,7 @@ const GetUser = async (req, res) => {
         if (data.empty) {
             return res.status(404).json({ message: "User not found" });
         }
-        const U_data=data.docs.map((doc)=>(doc.data()));
+        const U_data = data.docs.map((doc)=>(doc.data()));
         res.json(U_data);
     } catch (error) {
         console.error("Error fetching user:", error);

@@ -6,6 +6,8 @@ import Land from "./components/Land";
 import Profile from "./components/Profile";
 import Analysis from "./components/Analysis";
 import Signup from "./components/Signup";
+import ExpAddForm from "./components/ExpAddForm";
+import ExpList from "./components/ExpList";
 
 export type RootStackParamList = {
   GetStarted: undefined;
@@ -14,6 +16,8 @@ export type RootStackParamList = {
   Analysis: undefined;
   Profile: undefined;
   Signup: undefined;
+  ExpAddForm: undefined;
+  ExpList: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -30,11 +34,15 @@ export default function Index() {
         {(props) => <Login {...props} setProptoken={setProptoken} />}
       </Stack.Screen>
       <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="ExpAddForm" component={ExpAddForm} />
+      <Stack.Screen name="ExpList" component={ExpList} />
       <Stack.Screen name="Land">
         {(props) => <Land {...props} proptoken={proptoken} />}
       </Stack.Screen>
       <Stack.Screen name="Analysis" component={Analysis} />
-      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Profile">
+        {(props) => <Profile {...props} proptoken={proptoken} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 }

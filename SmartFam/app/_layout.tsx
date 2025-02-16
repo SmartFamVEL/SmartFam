@@ -2,7 +2,6 @@ import { Stack } from "expo-router";
 import { Text, Image, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
 import { Pacifico_400Regular } from "@expo-google-fonts/pacifico";
-import boy from "../assets/images/boy.png";
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -34,7 +33,7 @@ export default function RootLayout() {
         ),
         headerRight: () => (
           <TouchableOpacity onPress={() => console.log("Profile icon clicked")}>
-            <Image source={boy} style={{ width: 40, height: 40, marginRight: 10 }} />
+          
           </TouchableOpacity>
         ),
       }}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import boyAvatar from "../../../SmartFam/assets/images/boyAvatar.png";
 import girlAvatar from "../../../SmartFam/assets/images/girlAvatar.png";
@@ -8,15 +8,46 @@ import mSalary from "../../assets/images/mSalary.png";
 import gender from "../../assets/images/gender.png";
 import age from "../../assets/images/age.png";
 import BotLayout from "./BotLayout";
+import axios from "axios";
 
-const Profile = () => {
+const Profile = ({proptoken}) => {
+  const [email,setEmail] = useState("");
+  const [userdata,setUserdata] = useState([]);
+  const [avatar,setAvatar] = useState();
+
+  useEffect(() => {
+    const decodeToken = JSON.parse(atob(proptoken.split('.')[1]));
+    setEmail(decodeToken.email);
+}, [proptoken])
+
+useEffect(() => {
+  const fetchData = async() =>{
+    if (!email) return;
+
+    try{
+      const response = await axios.get(`http://172.16.146.231:6700/getdata/${email}`);
+      setUserdata(response.data[0]);
+    }
+    catch(err){
+      console.error(err.response?.data?.message || "Error fetching user");
+  }
+  }
+  fetchData();
+},[email]);
+
+useEffect(()=>{
+  if(userdata.gender){
+    setAvatar(userdata.gender.toLowerCase() === "male" ? boyAvatar : girlAvatar);
+  }
+},[userdata.gender]);
+
   return (
     <View style={styles.profileContainer}>
       <View style={styles.topContainer}>
         <Text style={styles.profileText}>Profile</Text>
-        <View><Image source={boyAvatar} style={{ width: 130, height: 130, borderRadius: 100 }} /></View>
-        <Text style={styles.helloUser}>Hello, Vijay!</Text>
-        <Text style={styles.email}>vijay.s@gmail.com</Text>
+        <View><Image source={avatar} style={{ width: 130, height: 130, borderRadius: 100 }} /></View>
+        <Text style={styles.helloUser}>Hello, {userdata.username}!</Text>
+        <Text style={styles.email}>{email}</Text>
       </View>
       <View style={{ position: "absolute", bottom: 0, width: "100%", }}>
         <BotLayout />
@@ -32,28 +63,21 @@ const Profile = () => {
             <Image source={smartphone} style={{ width: 25, height: 25 }} />
             <Text style={{ fontSize: 20 }}>Mobile No.</Text>
           </View>
-          <Text style={{ fontSize: 20 }}>9360477284</Text>
+          <Text style={{ fontSize: 20 }}>{userdata.ph}</Text>
         </View>
         <View style={styles.userInnerContainer}>
           <View style={styles.userDetailsGroup}>
             <Image source={mSalary} style={{ width: 25, height: 25 }} />
             <Text style={{ fontSize: 20 }}>Monthly Salary</Text>
           </View>
-          <Text style={{ fontSize: 20 }}>$ 5000</Text>
+          <Text style={{ fontSize: 20 }}>$ {userdata.monthlysalary}</Text>
         </View>
         <View style={styles.userInnerContainer}>
           <View style={styles.userDetailsGroup}>
             <Image source={gender} style={{ width: 25, height: 25 }} />
             <Text style={{ fontSize: 20 }}>Gender</Text>
           </View>
-          <Text style={{ fontSize: 20 }}>Male</Text>
-        </View>
-        <View style={styles.userInnerContainer}>
-          <View style={styles.userDetailsGroup}>
-            <Image source={age} style={{ width: 25, height: 25 }} />
-            <Text style={{ fontSize: 20 }}>Age</Text>
-          </View>
-          <Text style={{ fontSize: 20 }}>21</Text>
+          <Text style={{ fontSize: 20 }}>{userdata.gender}</Text>
         </View>
       </View>
     </View>
@@ -96,14 +120,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   userDetailsContainer: {
-    height: "40%",
+    height: "35%",
     width: "96%",
     marginLeft: "2%",
     display: "flex",
     gap: 10,
     alignItems: "center",
     justifyContent: "space-around",
-    padding: 10
+    padding: 10,
+    marginTop:30
   },
   userInnerContainer: {
     flexDirection: "row",
