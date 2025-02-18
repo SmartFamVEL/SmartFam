@@ -17,7 +17,7 @@ const Amount = () => {
             const token = await SecureStore.getItemAsync("user_token");
             if (!token) return;
   
-            const response = await axios.get('http://172.16.146.231:6700/getExp', {
+            const response = await axios.get('http://172.16.147.47:6700/getExp', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

@@ -16,7 +16,7 @@ const ExpList = () => {
                 const token = await SecureStore.getItemAsync("user_token");
                 if (!token) return;
 
-                const response = await axios.get('http://172.16.146.231:6700/getExp', {
+                const response = await axios.get('http://172.16.147.47:6700/getExp', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -47,7 +47,7 @@ const ExpList = () => {
             const token = await SecureStore.getItem("user_token");
             if (!token) return;
 
-            await axios.delete(`http://172.16.146.231:6700/deleteExp/${id}`, {
+            await axios.delete(`http://172.16.147.47:6700/deleteExp/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

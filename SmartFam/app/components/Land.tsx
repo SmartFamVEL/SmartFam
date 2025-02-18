@@ -22,7 +22,7 @@ useEffect(() => {
     if (!email) return;
 
     try{
-      const response = await axios.get(`http://172.16.146.231:6700/getdata/${email}`);
+      const response = await axios.get(`http://172.16.147.47:6700/getdata/${email}`);
       setUserdata(response.data[0]);
     }
     catch(err){

@@ -39,7 +39,7 @@ const ExpAddForm = () => {
                 Amount: Number(amount)
             }
             console.log("Sending data:", Data);
-            const response = await axios.post('http://172.16.146.231:6700/addExp', Data, {
+            const response = await axios.post('http://172.16.147.47:6700/addExp', Data, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

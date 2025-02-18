@@ -8,6 +8,7 @@ import Analysis from "./components/Analysis";
 import Signup from "./components/Signup";
 import ExpAddForm from "./components/ExpAddForm";
 import ExpList from "./components/ExpList";
+import EditProfile from "./components/EditProfile";
 
 export type RootStackParamList = {
   GetStarted: undefined;
@@ -18,6 +19,7 @@ export type RootStackParamList = {
   Signup: undefined;
   ExpAddForm: undefined;
   ExpList: undefined;
+  EditProfile: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -25,7 +27,6 @@ const Stack = createStackNavigator<RootStackParamList>();
 export default function Index() {
 
   const [proptoken, setProptoken] = useState("");
-  console.log("propToken form index.js", proptoken);
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="GetStarted">
@@ -43,6 +44,7 @@ export default function Index() {
       <Stack.Screen name="Profile">
         {(props) => <Profile {...props} proptoken={proptoken} />}
       </Stack.Screen>
+      <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );
 }

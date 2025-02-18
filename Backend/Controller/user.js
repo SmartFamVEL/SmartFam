@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 const { db, User } = require("../config/Dbconfig");
-const { addDoc, query, getDocs, where} = require("firebase/firestore");
+const { addDoc, query, getDocs, where, updateDoc } = require("firebase/firestore");
 
 const bcrypt = require('bcrypt');
 const Token = require('../middlewares/jwtconfig');
@@ -44,7 +44,7 @@ const LoginUser = async (req, res) => {
         const { email, password } = req.body;
 
         console.log(req.body);
-        const userQuery = query(User,where("email", "==", email));
+        const userQuery = query(User, where("email", "==", email));
         const userSnapshot = await getDocs(userQuery);
 
         if (userSnapshot.empty) {
@@ -82,14 +82,14 @@ const LoginUser = async (req, res) => {
 const GetUser = async (req, res) => {
     try {
         const email = req.params.email;
-        
-        const userQuery = query(User, where("email", "==", email)); 
-        const data = await getDocs(userQuery); 
+
+        const userQuery = query(User, where("email", "==", email));
+        const data = await getDocs(userQuery);
 
         if (data.empty) {
             return res.status(404).json({ message: "User not found" });
         }
-        const U_data = data.docs.map((doc)=>(doc.data()));
+        const U_data = data.docs.map((doc) => (doc.data()));
         res.json(U_data);
     } catch (error) {
         console.error("Error fetching user:", error);
@@ -97,4 +97,33 @@ const GetUser = async (req, res) => {
     }
 };
 
-module.exports = { AddNewUser, LoginUser,GetUser};
+const UpdateUser = async (req, res) => {
+    try{
+        const email = req.params.email;
+        const { username, monthlysalary, ph, gender } = req.body;
+        
+        const userQuery = query(User, where("email", "==", email));
+        const data = await getDocs(userQuery);
+    
+        if (data.empty) {
+            return res.status(404).json({ message: "User not found" });
+        }
+    
+        const userDoc = data.docs[0];
+        const userRef = userDoc.ref;
+    
+        await updateDoc(userRef, {
+            username : username || userDoc.data().username,
+            monthlysalary : monthlysalary || userDoc.data().monthlysalary,
+            ph : ph || userDoc.data().ph,
+            gender : gender || userDoc.data().gender,
+        });
+        res.status(200).json({ message: "User updated successfully" });
+
+    } catch(error){
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Server error" });
+    }
+}
+
+module.exports = { AddNewUser, LoginUser, GetUser, UpdateUser };

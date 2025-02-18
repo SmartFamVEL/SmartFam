@@ -9,11 +9,14 @@ import gender from "../../assets/images/gender.png";
 import age from "../../assets/images/age.png";
 import BotLayout from "./BotLayout";
 import axios from "axios";
+import { useNavigation } from "expo-router";
 
 const Profile = ({proptoken}) => {
   const [email,setEmail] = useState("");
   const [userdata,setUserdata] = useState([]);
   const [avatar,setAvatar] = useState();
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     const decodeToken = JSON.parse(atob(proptoken.split('.')[1]));
@@ -25,7 +28,7 @@ useEffect(() => {
     if (!email) return;
 
     try{
-      const response = await axios.get(`http://172.16.146.231:6700/getdata/${email}`);
+      const response = await axios.get(`http://172.16.147.47:6700/getdata/${email}`);
       setUserdata(response.data[0]);
     }
     catch(err){
@@ -53,7 +56,7 @@ useEffect(()=>{
         <BotLayout />
       </View>
 
-      <TouchableOpacity style={styles.edit}>
+      <TouchableOpacity style={styles.edit} onPress={()=>navigation.navigate("EditProfile")}>
         <Image source={edit} style={{ width: 25, height: 25 }} />
       </TouchableOpacity>
 
